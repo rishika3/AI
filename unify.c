@@ -1,92 +1,103 @@
-no_of_pred=0
-no_of_arg=[None for i in range(10)]
-nouse=''
-predicate=[None for i in range(10)]
-argument=[[None for i in range(10)] for i in range(10)]
- 
-def main():
-    global no_of_pred
-    ch='y'
-    while(ch == 'y'):
-        print("=========PROGRAM FOR UNIFICATION=========")
-        no_of_pred=int(input("Enter Number of Predicates:"))
-        for i in range(no_of_pred):
-        #nouse=input() #   //to accept "enter" as a character
-            print("Enter Predicate ",(i+1)," :")
-            predicate[i]=input()
-            print("Enter No.of Arguments for Predicate ",predicate[i]," :")
-            no_of_arg[i]=int(input())
+#include<stdio.h>
+int no_of_pred;
+int no_of_arg[10];
+int i,j;
+char nouse;
+char predicate[10];
+char argument[10][10];
+void unify();
+void display();
+void chk_arg_pred();
+  void main()
+   {
+      char ch;
+      do{
+            printf("\t=========PROGRAM FOR UNIFICATION=========\n");
+            printf("\nEnter Number of Predicates:- [ ]\b\b");
+            scanf("%d",&no_of_pred);
+             for(i=0;i<no_of_pred;i++)
+            {
+                scanf("%c",&nouse);    //to accept "enter" as a character
+                printf("\nEnter Predicate %d:-[ ]\b\b",i+1);
+                scanf("%c",&predicate[i]);
+                printf("\n\tEnter No.of Arguments for Predicate %c:-[ ]\b\b",predicate[i]);
+                scanf("%d",&no_of_arg[i]);
+                for(j=0;j<no_of_arg[i];j++)
+                {
+                         scanf("%c",&nouse);
+                         printf("\n\tEnter argument %d:( )\b\b",j+1);
+                         scanf("%c",&argument[i][j]);
+               }
+           }
+            display();
+            chk_arg_pred();
+            printf("Do you want to continue(y/n):   ");
+            scanf("%c",&ch);
+       }while(ch == 'y');
+   }
+   void display()
+   {
+       printf("\n\t=======PREDICATES ARE======");
+            for(i=0;i<no_of_pred;i++)
+            {
+             printf("\n\t%c(",predicate[i]);
+                        for(j=0;j<no_of_arg[i];j++)
+                        {
+                        printf("%c",argument[i][j]);
+                        if(j!=no_of_arg[i]-1)
+                                    printf(",");
+                        }
+             printf(")");
+            }
+   }
+  void chk_arg_pred()
+   {
+   int pred_flag=0;
+   int arg_flag=0;
+            for(i=0;i<no_of_pred-1;i++)
+            {
+                        if(predicate[i]!=predicate[i+1])
+                        {
+                        printf("\nPredicates not same..");
+                        printf("\nUnification cannot progress!");
+                        pred_flag=1;
+                        break;
+                        }
+            }
+     if(pred_flag!=1)
+     {
+            for(i=0;i<no_of_arg[i]-1;i++)
+            {
+                        if(no_of_arg[i]!=no_of_arg[i+1])
+                        {
+                        printf("\nArguments Not Same..!");
+                        arg_flag=1;
+                        break;
+                        }
+            }
+     }
+            if(arg_flag==0&&pred_flag!=1)
+                        unify();
 
-            for j in range(no_of_arg[i]):
-                print("Enter argument ",j+1," :");
-                argument[i][j]=input()
-
- 
-        display()
-        chk_arg_pred()
-        ch=input("Do you want to continue(y/n):   ")
-
-def display():
-
-    print("=======PREDICATES ARE======")
-    for i in range(no_of_pred):
-        print(predicate[i],"(", end="")
-        for j in range(no_of_arg[i]):
-            print(argument[i][j], end="")
-            if(j!=no_of_arg[i]-1):
-                print(",", end="")
-        print(")")
-
-
-#/*==========UNIFY FUNCTION=========*/
-
-def unify():
-    flag=0
-    for i in range(no_of_pred-1):
-        for j in range(no_of_arg[i]):
-            if(argument[i][j]!=argument[i+1][j]):
-                if(flag==0):
-                    print("======SUBSTITUTION IS======")
-                    print(argument[i+1][j],"/",argument[i][j])
-                    flag+=1
-
-        if(flag==0):
-            print("Arguments are Identical...")
-            print("No need of Substitution")
-
-
-def chk_arg_pred():
-    pred_flag=0
-    arg_flag=0
-
-
-   #/*======Checking Prediactes========*/
-    for i in range(no_of_pred-1):
-        if(predicate[i]!=predicate[i+1]):
-            print("Predicates not same..")
-            print("Unification cannot progress!")
-            pred_flag=1
-            break
-
-   #/*=====Chking No of Arguments====*/
-
-    if(pred_flag!=1):
-        ind=0
-        key = no_of_arg[ind]
-        l = len(no_of_arg)
-        for i in range(0,key-1):
-            if i>=key:
-                continue
-            if ind!=l-1:
-                ind += 1
-                key = no_of_arg[ind]
-            if(no_of_arg[i]!=no_of_arg[i+1]):
-
-                print("Arguments Not Same..!")
-                arg_flag=1
-                break
-
-        if(arg_flag==0 and pred_flag!=1):
-            unify()
-
-main()
+   }
+   void unify()
+   {
+            int flag=0;
+            for(i=0;i<no_of_pred-1;i++)
+            {
+                 for(j=0;j<no_of_arg[i];j++)
+                 {
+                        if(argument[i][j]!=argument[i+1][j])
+                        {
+                          if(flag==0)
+                          printf("\n\t======SUBSTITUTION IS======");
+                        printf("\n\t%c/%c",argument[i+1][j],argument[i][j]);
+                         flag++;
+                        }
+                }
+            }
+            if(flag==0)
+            {          printf("\nArguments are Identical...");
+                        printf("\nNo need of Substitution\n");
+            }
+   }
